@@ -1,11 +1,11 @@
-<template>
+<template xmlns:el-table="http://www.w3.org/1999/html">
   <el-container>
     <el-header style="height: auto">
       <myHeader></myHeader>
     </el-header>
 
     <el-main class=" row-col-center">
-      <el-card v-show="fileUploadVisible" class="box-card" style="width: 500px">
+      <el-card v-show="fileUploadVisible" class="box-card" style="width: 80%">
         <div slot="header" class="clearfix">
           <span class="row-col-left">离线数据文件上传</span>
         </div>
@@ -22,7 +22,7 @@
         </div>
       </el-card>
 
-      <div v-show="maskConfigVisible" style="width: auto">
+      <div v-show="maskConfigVisible" style="width: 80%">
         <el-card class="box-card" >
           <div slot="header" class="clearfix">
             <span class="row-col-left">数据脱敏配置</span>
@@ -66,14 +66,19 @@
             </el-form>
           </div>
         </el-card>
-
         <br/>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span class="row-col-left">部分原始数据展示</span>
+            <span class="row-col-left">部分原始数据展示（不超过10条）</span>
           </div>
           <div>
-
+            <el-table :data="subOriginDataList" stripe border style="width: 100%">
+              <el-table-column v-for="(item, index) in fields" :key="index" :label="item">
+                <template slot-scope="scope">
+                  <span>{{scope.row[index]}}</span>
+                </template>
+              </el-table-column>
+            </el-table>
           </div>
         </el-card>
       </div>
@@ -93,6 +98,7 @@ export default {
       fileList: [],
       fields: [],
       maskMethods: [],
+      subOriginDataList: [],
       maskConfigVisible: false,
       fileUploadVisible: true,
       loginStatus: '',
@@ -126,7 +132,6 @@ export default {
       }
     },
     handleBeforeUpload (file) {
-      console.log(file)
       let param = new FormData() // 创建form对象
       param.append('file', file) // file对象是 beforeUpload参数
       /* let config = {
@@ -139,8 +144,16 @@ export default {
           if (response.status === 'success') {
             this.fields = response.fields
             this.maskMethods = response.maskMethods
+            this.subOriginDataList = response.subOriginDataList
             this.maskConfigVisible = true
             this.fileUploadVisible = false
+          } else if (response.status === 'noUserFail') {
+            this.$message({
+              message: '用户处于非登录状态，请登录！',
+              type: 'error'
+            })
+            this.loginStatus = this.$cookie.get('loginStatus')
+            this.userValidate()
           } else {
             this.$message({
               message: '文件数据解析失败！',
@@ -183,7 +196,7 @@ export default {
       let selectMethod = maskConfig.selectMethod
       if (selectMethod === '可逆置换-凯撒' ||
         selectMethod === '可逆置换-栅栏' ||
-        selectMethod === '差分隐私') {
+        selectMethod === '差分隐私' || selectMethod === 'k匿名') {
         maskConfig.showParameter = true
       } else {
         maskConfig.showParameter = false
@@ -219,9 +232,28 @@ export default {
         },
         response => { // status
           if (response.status === 'success') {
-            console.log('mask configs success')
+            this.$message({
+              message: '成功提交脱敏配置，后台正在对数据进行脱敏。',
+              type: 'success'
+            })
+            // 成功的话，表示已经启动后台的脱敏执行异步线程，前台转到 脱敏执行过程展示页面。
+          } else if (response.status === 'noMaskConfig') {
+            this.$message({
+              message: '正确的脱敏配置为空，请重新配置！',
+              type: 'error'
+            })
+          } else if (response.status === 'noUserFail') {
+            this.$message({
+              message: '用户处于非登录状态，请登录！',
+              type: 'error'
+            })
+            this.loginStatus = this.$cookie.get('loginStatus')
+            this.userValidate()
           } else {
-            console.log('mask configs failed')
+            this.$message({
+              message: '未知错误！',
+              type: 'error'
+            })
           }
         }
       )
@@ -242,11 +274,5 @@ export default {
     flex-direction: row;
     justify-content: left;
     align-items: left;
-  }
-  .row-col-right {
-    display: flex;
-    flex-direction: row;
-    justify-content: right;
-    align-items: right;
   }
 </style>

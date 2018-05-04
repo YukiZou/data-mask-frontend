@@ -18,7 +18,7 @@
 
             <el-form-item label="密码" prop="pwd">
               <!-- <input type="password" v-model="loginForm.pwd"> -->
-              <el-input placeholder="请输入密码" type="password" v-model="loginForm.pwd" clearable v-on:keyup.enter.native="submit"></el-input>
+              <el-input placeholder="请输入密码" type="password" v-model="loginForm.pwd" clearable v-on:keyup.enter.native="loginSubmit"></el-input>
             </el-form-item>
 
             <el-form-item size="medium" class="row-col-center">
@@ -48,12 +48,12 @@
 
             <el-form-item label="密码" prop="pwd">
               <!-- <input type="password" v-model="loginForm.pwd"> -->
-              <el-input placeholder="请输入密码" type="password" v-model="registerForm.pwd" clearable v-on:keyup.enter.native="submit"></el-input>
+              <el-input placeholder="请输入密码" type="password" v-model="registerForm.pwd" clearable v-on:keyup.enter.native="registerSubmit"></el-input>
             </el-form-item>
 
             <el-form-item label="确认密码" prop="newPwd">
               <!-- <input type="password" v-model="loginForm.pwd"> -->
-              <el-input placeholder="请再次输入密码" type="password" v-model="registerForm.newPwd" clearable v-on:keyup.enter.native="submit"></el-input>
+              <el-input placeholder="请再次输入密码" type="password" v-model="registerForm.newPwd" clearable v-on:keyup.enter.native="registerSubmit"></el-input>
             </el-form-item>
 
             <el-form-item size="medium" class="row-col-center">
