@@ -215,7 +215,6 @@ export default {
       )
     },
     dataMaskExecute () { // 脱敏执行按钮执行的方法
-      console.log(this.maskConfigs)
       let maskConfigList = []
       for (var index = 0; index < this.maskConfigs.length; index++) {
         maskConfigList.push({
@@ -224,7 +223,6 @@ export default {
           parameter: this.maskConfigs[index].parameter
         })
       }
-      console.log(maskConfigList)
       this.$api.post(
         '/offline/masking',
         {
@@ -236,7 +234,10 @@ export default {
               message: '成功提交脱敏配置，后台正在对数据进行脱敏。',
               type: 'success'
             })
-            // 成功的话，表示已经启动后台的脱敏执行异步线程，前台转到 脱敏执行过程展示页面。
+            // 成功的话，表示已经启动后台的脱敏执行异步线程，前台转到 脱敏执行过程展示页面 /masking。
+            this.$router.push({
+              path: '/masking'
+            })
           } else if (response.status === 'noMaskConfig') {
             this.$message({
               message: '正确的脱敏配置为空，请重新配置！',
