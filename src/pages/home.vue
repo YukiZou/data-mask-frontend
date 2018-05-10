@@ -25,7 +25,7 @@
               <!--<i class="fa fa-book fa-lg"/>-->
               <span class="hidden-md-and-down">&nbsp;实时流数据脱敏</span>
               <el-button style="float: right; padding: 3px 0" type="text">
-                <router-link to="/login">进入</router-link>
+                <router-link to="/stream">进入</router-link>
               </el-button>
             </div>
             <div>
@@ -41,7 +41,7 @@
               <!--<i class="fa fa-users fa-lg"/>-->
               <span class="hidden-md-and-down">&nbsp;数据同步</span>
               <el-button style="float: right; padding: 3px 0" type="text">
-                <router-link to="/login">进入</router-link>
+                <router-link to="/data_sync">进入</router-link>
               </el-button>
             </div>
             <div>
@@ -55,7 +55,7 @@
               <!--<i class="fa fa-book fa-lg"/>-->
               <span class="hidden-md-and-down">&nbsp;历史数据查看</span>
               <el-button style="float: right; padding: 3px 0" type="text">
-                <router-link to="/login">进入</router-link>
+                <router-link to="/history">进入</router-link>
               </el-button>
             </div>
             <div>

@@ -42,6 +42,7 @@ export default {
   },
   data () {
     return {
+      interval: '',
       maskProcessVisible: true,
       maskResultVisible: false,
       userFileId: 0,
@@ -71,7 +72,9 @@ export default {
             this.userFileId = response.userFileId
             this.selectFields = response.selectFields
             // 启动轮询函数， ms
-            setInterval(this.getMaskStatus(), 500)
+            this.interval = setInterval(() => {
+              this.getMaskStatus()
+            }, 500)
           } else {
             this.$message({
               message: '未知错误！',
@@ -118,11 +121,14 @@ export default {
       if (allComplete) {
         // 显示能够跳往 maskResult 界面的按钮。
         this.maskResultVisible = true
+        // 停止轮询
+        clearInterval(this.interval)
       }
     },
     gotoMaskResult () {
       this.$router.push({
-        path: '/result'
+        name: 'maskResult',
+        params: {userFileId: this.userFileId}
       })
     }
   }

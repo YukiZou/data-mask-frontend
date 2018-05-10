@@ -16,11 +16,11 @@
           <!--<i class="fa fa-users fa-lg"/>-->
           <span class="hidden-md-and-down">&nbsp;离线数据脱敏</span>
         </el-menu-item>
-        <el-menu-item index="/online">
+        <el-menu-item index="/stream">
           <!--<i class="fa fa-book fa-lg"/>-->
           <span class="hidden-md-and-down">&nbsp;实时流数据脱敏</span>
         </el-menu-item>
-        <el-menu-item index="/datasynch">
+        <el-menu-item index="/data_sync">
           <!--<i class="fa fa-list-ol fa-lg"/>-->
           <span class="hidden-md-and-down">&nbsp;数据同步</span>
         </el-menu-item>

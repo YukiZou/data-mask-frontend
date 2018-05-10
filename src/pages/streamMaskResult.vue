@@ -1,18 +1,16 @@
-<!--脱敏结果展示页面-->
 <template>
   <el-container>
     <el-header style="height: auto">
       <myHeader></myHeader>
     </el-header>
-
     <el-main class=" row-col-center">
       <el-card class="box-card" style="width: 80%">
         <div slot="header" class="clearfix">
           <span class="row-col-left">数据脱敏结果</span>
-          <el-button style="float: right; padding: 3px 0" type="text" v-on:click="gotoMaskResultExport">导出脱敏结果</el-button>
+          <el-button v-show="enableExport" style="float: right; padding: 3px 0" type="text" v-on:click="gotoStreamMaskResultExport">导出脱敏结果</el-button>
         </div>
         <div>
-          <el-table :data="maskedData" stripe border style="width: 100%">
+          <el-table :data="streamMaskedData" stripe border style="width: 100%">
             <el-table-column v-for="(item, index) in fields" :key="index" :label="item">
               <template slot-scope="scope">
                 <span>{{scope.row[index]}}</span>
@@ -33,16 +31,17 @@ export default {
   },
   data () {
     return {
-      userFileId: 0,
+      userStreamId: null,
+      enableExport: true,
       fields: [],
-      maskedData: []
+      streamMaskedData: []
     }
   },
   created () {
     this.loginStatus = this.$cookie.get('loginStatus')
-    this.userFileId = this.$route.params.userFileId
+    this.userStreamId = this.$route.params.userStreamId
     this.userValidate()
-    this.allMaskedData()
+    this.queryAllMaskedData()
   },
   methods: {
     userValidate () {
@@ -52,17 +51,19 @@ export default {
         })
       }
     },
-    allMaskedData () {
+    queryAllMaskedData () {
       this.$api.post(
-        '/offline/masked_data',
+        '/stream/masked_data',
         {
-          userFileId: this.userFileId
+          userStreamId: this.userStreamId
         },
         response => { // status
           if (response.status === 'success') {
-            this.userFileId = response.userFileId
             this.fields = response.fields
-            this.maskedData = response.maskedData
+            this.streamMaskedData = response.streamMaskedData
+            if (this.fields.length < 1) {
+              this.enableExport = false
+            }
           } else {
             this.$message({
               message: '查询所有脱敏后数据错误！',
@@ -72,10 +73,10 @@ export default {
         }
       )
     },
-    gotoMaskResultExport () {
+    gotoStreamMaskResultExport () {
       this.$router.push({
-        name: 'maskResultExport',
-        params: {userFileId: this.userFileId}
+        name: 'streamMaskResultExport',
+        params: {userStreamId: this.userStreamId}
       })
     }
   }
