@@ -19,9 +19,9 @@
             </el-table-column>
             <el-table-column prop="fileName" label="原文件名">
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="200px">
+            <el-table-column fixed="right" label="操作" width="150px">
               <template slot-scope="scope">
-                <el-button @click="viewFileRecordData(scope.row.id)" type="primary" size="middle" icon="el-icon-view">查看</el-button>
+                <el-button @click="viewFileRecordData(scope.row.id)" type="primary" size="small" icon="el-icon-view">查看</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -41,9 +41,9 @@
             </el-table-column>
             <el-table-column prop="topic" label="Kafka Topic">
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="200px">
+            <el-table-column fixed="right" label="操作" width="150px">
               <template slot-scope="scope">
-                <el-button  @click="viewStreamRecordData(scope.row.id)" type="primary" size="middle" icon="el-icon-view">查看</el-button>
+                <el-button  @click="viewStreamRecordData(scope.row.id)" type="primary" size="small" icon="el-icon-view">查看</el-button>
               </template>
             </el-table-column>
           </el-table>
